@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雅思起步 - IELTS Starter</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">📘 雅思起步</div>
+        <div class="nav-links">
+            <button class="nav-btn active" data-page="home">首页</button>
+            <button class="nav-btn" data-page="words">词汇</button>
+            <button class="nav-btn" data-page="speaking">口语</button>
+            <button class="nav-btn" data-page="writing">写作</button>
+            <button class="nav-btn" data-page="listening">听力</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- 首页 -->
+        <section id="page-home" class="page active">
+            <div class="hero">
+                <h1>从零开始，稳步到6.5</h1>
+                <p class="subtitle">专为4.5分基础设计，每天进步一点点</p>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-num" id="stat-days">1</div>
+                        <div class="stat-label">学习天数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="stat-words">0</div>
+                        <div class="stat-label">已掌握词汇</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num" id="stat-tasks">0/5</div>
+                        <div class="stat-label">今日任务</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 今天学什么？</h2>
+                <p class="hint">不知道从何开始？点一下，我帮你安排今天的任务。</p>
+                <button class="btn-primary btn-large" id="btn-generate-task">生成今日任务</button>
+                <div id="today-tasks" class="task-list hidden">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💡 给低分考生的建议</h2>
+                <ul class="tips-list">
+                    <li><strong>不要背单词书：</strong>从最高频的500词开始，一天只背20个。</li>
+                    <li><strong>听力不要盲听：</strong>先读原文，再听，再跟读，最后听写。</li>
+                    <li><strong>口语不要怕错：</strong>先做到"能开口说30秒"，再追求复杂句。</li>
+                    <li><strong>写作不要原创：</strong>先用模板填空，再慢慢替换成自己的内容。</li>
+                    <li><strong>阅读不要通读：</strong>学会"找关键词定位答案"，大部分题不需要读懂全文。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 词汇页 -->
+        <section id="page-words" class="page">
+            <div class="card">
+                <h2>📚 核心高频词汇</h2>
+                <p class="hint">共500词，从出现频率最高的开始。点击卡片翻转看释义。</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="word-progress"></div>
+                </div>
+                <div class="progress-text">已掌握 <span id="word-mastered">0</span> / <span id="word-total">50</span></div>
+            </div>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="flashcard">
+                    <div class="flashcard-front">
+                        <div class="word-text" id="card-word">accommodation</div>
+                        <div class="word-phonetic" id="card-phonetic">/əˌkɒməˈdeɪʃn/</div>
+                        <button class="btn-sound" id="btn-speak">🔊 发音</button>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="word-meaning" id="card-meaning">n. 住处，住宿</div>
+                        <div class="word-example" id="card-example">"The price includes accommodation and meals."</div>
+                        <div class="word-example-cn" id="card-example-cn">价格包含食宿。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn-secondary" id="btn-prev">← 上一个</button>
+                <button class="btn-success" id="btn-known">✓ 认识</button>
+                <button class="btn-danger" id="btn-unknown">✗ 不认识</button>
+                <button class="btn-secondary" id="btn-next">下一个 →</button>
+            </div>
+        </section>
+
+        <!-- 口语页 -->
+        <section id="page-speaking" class="page">
+            <div class="card">
+                <h2>🎤 口语练习</h2>
+                <p class="hint">从最简单的Level 1开始，能开口就是胜利。</p>
+                <div class="level-selector">
+                    <button class="level-btn active" data-level="1">Level 1<br><small>只说3句话</small></button>
+                    <button class="level-btn" data-level="2">Level 2<br><small>说满30秒</small></button>
+                    <button class="level-btn" data-level="3">Level 3<br><small>说满1分钟</small></button>
+                </div>
+            </div>
+
+            <div class="card question-card">
+                <div class="question-type" id="question-type">Part 1 - 基础话题</div>
+                <div class="question-text" id="question-text">Where is your hometown?</div>
+                <div class="question-hint" id="question-hint">试着回答：在哪 + 什么样 + 喜欢吗</div>
+            </div>
+
+            <div class="card">
+                <h3>⏱️ 计时器</h3>
+                <div class="timer-display" id="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <button class="btn-primary" id="btn-timer-start">开始计时</button>
+                    <button class="btn-secondary" id="btn-timer-pause">暂停</button>
+                    <button class="btn-danger" id="btn-timer-reset">重置</button>
+                </div>
+                <p class="hint">目标：Level 1 回答15秒，Level 2 回答30秒，Level 3 回答1分钟。</p>
+            </div>
+
+            <div class="card-actions">
+                <button class="btn-primary btn-large" id="btn-next-question">🎲 换一题</button>
+            </div>
+        </section>
+
+        <!-- 写作页 -->
+        <section id="page-writing" class="page">
+            <div class="card">
+                <h2>✍️ 写作模板填空</h2>
+                <p class="hint">像完形填空一样写作文。先学会"套模板"，再慢慢替换高级词汇。</p>
+                <div class="template-selector">
+                    <button class="template-btn active" data-template="task1-static">小作文-静态图</button>
+                    <button class="template-btn" data-template="task1-dynamic">小作文-动态图</button>
+                    <button class="template-btn" data-template="task2-opinion">大作文-同意与否</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 id="template-title">静态图（柱状图/饼图）4段式模板</h3>
+                <div class="template-form" id="template-form">
+                    <!-- 动态生成输入框 -->
+                </div>
+                <button class="btn-primary btn-large" id="btn-generate-essay">生成作文</button>
+            </div>
+
+            <div class="card hidden" id="essay-result-card">
+                <h3>📝 你的作文</h3>
+                <div class="essay-output" id="essay-output"></div>
+                <div class="essay-tips">
+                    <h4>💡 提升建议</h4>
+                    <ul id="essay-tips-list"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 听力页 -->
+        <section id="page-listening" class="page">
+            <div class="card">
+                <h2>🎧 精听练习</h2>
+                <p class="hint">把听力原文粘贴到下面，点击任意句子即可反复听该句。</p>
+                <textarea class="textarea-large" id="listening-text" placeholder="粘贴听力原文到这里...
+例如：
+Woman: Good morning. I'd like to book a table for dinner tonight.
+Man: Certainly. How many people will be dining?
+Woman: Four adults and two children."></textarea>
+                <div class="input-group">
+                    <label>音频URL（可选）：</label>
+                    <input type="text" id="audio-url" placeholder="https://example.com/audio.mp3">
+                </div>
+                <button class="btn-primary" id="btn-load-text">加载原文</button>
+            </div>
+
+            <div class="card hidden" id="listening-player-card">
+                <audio id="audio-player" controls></audio>
+                <div class="sentence-list" id="sentence-list">
+                    <!-- 动态生成句子列表 -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>IELTS Starter - 专为低分考生设计</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
