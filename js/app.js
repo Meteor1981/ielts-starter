@@ -211,20 +211,23 @@ if (stats.currentDate !== today) {
 
 // ============ 路由 ============
 
-document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const page = btn.dataset.page;
-        switchPage(page);
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    });
-});
-
 function switchPage(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(`page-${page}`).classList.add('active');
     window.scrollTo(0, 0);
+
+    // 同步顶部和底部导航激活状态
+    document.querySelectorAll('.nav-btn, .bottom-nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll(`.nav-btn[data-page="${page}"], .bottom-nav-btn[data-page="${page}"]`).forEach(b => b.classList.add('active'));
 }
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPage(btn.dataset.page));
+});
+
+document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPage(btn.dataset.page));
+});
 
 // ============ 首页 ============
 
@@ -524,6 +527,61 @@ document.getElementById('btn-load-text').addEventListener('click', () => {
 
     document.getElementById('listening-player-card').classList.remove('hidden');
 });
+
+// ============ 词汇卡片滑动支持 ============
+
+(function initSwipe() {
+    const card = document.getElementById('flashcard');
+    if (!card) return;
+
+    let startX = 0;
+    let startY = 0;
+    let isDragging = false;
+
+    card.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+    }, { passive: true });
+
+    card.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        // 防止垂直滑动时翻转卡片造成冲突
+        const diffX = e.touches[0].clientX - startX;
+        const diffY = e.touches[0].clientY - startY;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    card.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        const diffX = e.changedTouches[0].clientX - startX;
+        const diffY = e.changedTouches[0].clientY - startY;
+
+        // 水平滑动超过 50px 才触发
+        if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) {
+                // 左滑 → 下一个
+                card.classList.add('swipe-left');
+                setTimeout(() => {
+                    currentWordIndex = (currentWordIndex + 1) % vocabulary.length;
+                    renderWord(currentWordIndex);
+                    card.classList.remove('swipe-left');
+                }, 250);
+            } else {
+                // 右滑 → 上一个
+                card.classList.add('swipe-right');
+                setTimeout(() => {
+                    currentWordIndex = (currentWordIndex - 1 + vocabulary.length) % vocabulary.length;
+                    renderWord(currentWordIndex);
+                    card.classList.remove('swipe-right');
+                }, 250);
+            }
+        }
+    }, { passive: true });
+})();
 
 // ============ 初始化 ============
 

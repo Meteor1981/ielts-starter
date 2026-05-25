@@ -578,17 +578,98 @@ body {
     font-size: 0.85rem;
 }
 
+/* 底部移动端导航 */
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: all 0.2s;
+    min-height: 56px;
+}
+
+.bottom-nav-btn.active {
+    color: var(--primary);
+}
+
+.bottom-nav-icon {
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
+
+.bottom-nav-label {
+    font-size: 0.65rem;
+}
+
+/* 触摸优化 */
+button, .task-item, .sentence-item, .flashcard {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* 滑动动画 */
+.flashcard.swipe-left {
+    animation: swipeLeft 0.3s ease;
+}
+
+.flashcard.swipe-right {
+    animation: swipeRight 0.3s ease;
+}
+
+@keyframes swipeLeft {
+    from { transform: translateX(0) rotateY(0); }
+    to { transform: translateX(-120%) rotateY(0); }
+}
+
+@keyframes swipeRight {
+    from { transform: translateX(0) rotateY(0); }
+    to { transform: translateX(120%) rotateY(0); }
+}
+
 /* 响应式 */
 @media (max-width: 600px) {
     .navbar {
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 1rem;
+        padding: 0.8rem 1rem;
+        position: sticky;
+        top: 0;
     }
 
     .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
+        display: none;
+    }
+
+    .nav-brand {
+        font-size: 1.2rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .bottom-nav {
+        display: flex;
+    }
+
+    .container {
+        padding: 1rem;
+        padding-bottom: calc(1rem + 56px + env(safe-area-inset-bottom));
     }
 
     .stats-bar {
@@ -600,14 +681,32 @@ body {
     }
 
     .flashcard {
-        height: 240px;
+        height: 260px;
     }
 
     .word-text {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 
     .timer-display {
         font-size: 2.5rem;
+    }
+
+    .btn-primary, .btn-secondary, .btn-success, .btn-danger {
+        padding: 0.9rem 1.5rem;
+        min-height: 44px;
+    }
+
+    .card-actions {
+        gap: 0.8rem;
+    }
+
+    .level-btn, .template-btn {
+        min-height: 48px;
+    }
+
+    .essay-output {
+        font-size: 0.9rem;
+        padding: 1rem;
     }
 }
